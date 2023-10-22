@@ -1,0 +1,108 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="container">
+    <h3>Nche Family members</h3>
+<!------------------create new Customer------------------->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#AddFamilymember">
+    Add family
+</button>
+<!------------ create customer Modal-start-------------->
+<div class="modal fade" id="AddFamilymember" tabindex="-1" role="dialog" aria-labelledby="AddFamilymemberLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="AddFamilymemberLabel">Add new family member</h5>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!------------------form start------------>
+            <form action="{{url_for('create')}}" method="POST">
+                <div class="form-group">
+                    <label >Name</label><br>
+                    <input type="text" class="form-control" name="name" required="1">
+                </div>
+                <div class="form-group">
+                    <label >Email</label><br>
+                    <input type="text" class="form-control" name="email" required="1">
+                </div>
+                <div class="form-group">
+                    <label >Phone</label><br>
+                    <input type="number" class="form-control" name="phone" required="1">
+                </div>
+                <button type="submit" class="btn btn-primary">Add family</button>
+            </form>
+          <!------------------form end------------>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<!------------ create customer Modal-End-------------->
+<hr>
+<!--------all customers----------------------->
+<table>
+    <tr>
+        <th>Id &nbsp;&nbsp;&nbsp;</th> 
+        <th>Name &nbsp;&nbsp;&nbsp;</th> 
+        <th>Email &nbsp;&nbsp;&nbsp;</th> 
+        <th>Phone &nbsp;&nbsp;&nbsp;</th>  
+        <th>Actions</th> 
+    </tr>
+    {% for c in customers %}
+    <tr>
+        <td>{{ c.Id }} &nbsp;&nbsp;&nbsp;</td> 
+        <td>{{ c.Name }} &nbsp;&nbsp;&nbsp;</td> 
+        <td>{{ c.Email }} &nbsp;&nbsp;&nbsp;</td> 
+        <td>{{ c.Phone }} &nbsp;&nbsp;&nbsp;</td> 
+        <td>
+            <a href="/update/{{c.Id}}" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#EditCustomer{{c.Id}}">
+                Edit
+            </a> &nbsp;&nbsp;&nbsp;
+            <a href="/delete/{{c.Id}}" onclick="return confirm('Are you sure?')" class="btn btn-danger btn-sm">Delete</a>
+        </td>
+        <!------------ Edit Modal starts-------------------------->
+        <div class="modal fade" id="EditCustomer{{c.Id}}" tabindex="-1" role="dialog" aria-labelledby="EditCustomerLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="EditCustomerLabel">Add new family member</h5>
+                  <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <!------------------form start------------>
+                    <form action="{{url_for('update')}}" method="POST">
+                        <div class="form-group">                           
+                            <label >Name</label><br>
+                            <input type="hidden"  name="id" value="{{c.Id}}" >
+                            <input type="text" class="form-control" name="name" value="{{c.Name}}" required="1">
+                        </div>
+                        <div class="form-group">
+                            <label >Email</label><br>
+                            <input type="text" class="form-control" name="email" value="{{c.Email}}" required="1">
+                        </div>
+                        <div class="form-group">
+                            <label >Phone</label><br>
+                            <input type="number" class="form-control" name="phone" value="{{c.Phone}}" required="1">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update family</button>
+                    </form>
+                  <!------------------form end------------>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        <!------------ Edit Modal ends-------------------------->
+    </tr>
+    {% endfor %}
+</table>
+</div>
+{% endblock  %}
